@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MHGA</title>
+    <link rel="icon" href="icon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .hero-view {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+        }
+
+        .universe-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            animation: starMove 30s infinite alternate ease-in-out;
+        }
+
+        @keyframes starMove {
+            0% {
+                transform: scale(1.0) translate(0, 0);
+            }
+
+            100% {
+                transform: scale(1.1) translate(-1%, -1%);
+            }
+        }
+
+        .glass-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(0.7px) brightness(0.9);
+            -webkit-backdrop-filter: blur(0.7px) brightness(0.9);
+            background: rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+
+        .content {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            color: white;
+            text-align: center;
+            font-family: sans-serif;
+            letter-spacing: 0.5em;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+
+
+            z-index: 3;
+            font-size: 3rem;
+        }
+
+        .content h1 {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .content h2 {
+            font-family: "Courier New", Courier, monospace;
+            /* 使用等宽字体 */
+            font-size: 14px;
+            line-height: 1.2;
+            letter-spacing: 0px;
+            text-transform: uppercase;
+            /* 全部大写，更有指令感 */
+            opacity: 0.8;
+
+        }
+
+        .content a {
+            color: white;
+            text-decoration: none;
+            border: 1px solid white;
+            padding: 10px 30px;
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .content a:hover {
+            background: white;
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero-view">
+        <img src="universe.jpg" class="universe-bg" alt="Universe">
+        <div class="glass-overlay"></div>
+        <div class="content">
+            <h1>MHGA PLAN</h1>
+            <h2>Imagine, you’re a spaceman. Scientists have discovered that a kind of legendary rare energy
+                resources(infinity stone) are located near the earth. Now you have to pilot a spaceship to collect these
+                stones. It is said they can help humans solve the problems of energy shortage, epidemic, changing
+                climate, water shortage, gap of wealth, even why does one sock always mysteriously disappear. So the
+                task of rebuilding human beings civilization is in your hands. Attention Please, You may destroyed by
+                some randomly appearing space junk while you are piloting. So, be careful, for humans, for people, for
+                civilization, for Making Humans Great Again. Let’s go!</h2>
+            <a href="sketch.html">START</a>
+        </div>
+    </div>
+
+</body>
+
+</html>
