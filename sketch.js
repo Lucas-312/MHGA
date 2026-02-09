@@ -14,7 +14,8 @@ let gameState = "PLAY"; // PLAY, GAMEOVER, WIN
 
 // Variable of Arduino, test the data in arduino beforehand
 let serialPort;
-let joyX = 514, joyY = 518, joySW = 1;
+let joyX = 514, joyY = 518, joySW1 = 1;
+let lookX = 514, lookY = 518, joySW2 = 1;
 let centerX = 514, centerY = 518;
 let buffer = "";
 let connectBtn;
@@ -79,8 +80,9 @@ async function readSerial() {
     if (lines.length > 1) {
       let lastLine = lines[lines.length - 2].trim();
       let parts = lastLine.split(',');//because joystick always upload one set of data which include three numbers.every number represent different info,we have to use "," to divide them 
-      if (parts.length >= 3) {
-        joyX = int(parts[0]); joyY = int(parts[1]); joySW = int(parts[2]);
+      if (parts.length >= 6) {
+        joyX = int(parts[0]); joyY = int(parts[1]); joySW1 = int(parts[2]);
+        lookX = int(parts[3]); lookY = int(parts[4]); joySW2 = int(parts[5]);
       }
       buffer = lines[lines.length - 1];
     }
@@ -92,10 +94,17 @@ function draw() {
   if (gameState !== "PLAY") return; // if lose or win,stop the next part.
 
   // direction key(control the view angle)
-  if (keyIsDown(LEFT_ARROW)) yaw += lookSpeed; // press left arrow, turn left
-  if (keyIsDown(RIGHT_ARROW)) yaw -= lookSpeed; // same,right
-  if (keyIsDown(UP_ARROW)) pitch -= lookSpeed; // press up arrow, turn up
-  if (keyIsDown(DOWN_ARROW)) pitch += lookSpeed; // same,down
+ let lookOffX = lookX - centerX;
+ let lookOffY = lookY - centerY;
+
+  // left and right
+  if (abs(lookOffX) > 60) {
+    yaw -= (lookOffX / 512) * lookSpeed * 0.8; 
+  }
+  // up and down
+  if (abs(lookOffY) > 60) {
+    pitch += (lookOffY / 514) * lookSpeed * 0.8; 
+  }
   pitch = constrain(pitch, -HALF_PI + 0.1, HALF_PI - 0.1);
 
   //calculate direction vector
@@ -119,12 +128,14 @@ function draw() {
   if (offX > 200) camPos.add(p5.Vector.mult(right, moveSpeed)); // push left->move left
   else if (offX < -200) camPos.sub(p5.Vector.mult(right, moveSpeed)); // push right->move right
 
-  if (joySW === 0 && gameState === "PLAY") {
+  if (joySW1 === 0) {
     camPos.y -= verticalSpeed; // rise your spaceship when you press the joystick, reduce y
   }
+  if (joySW2 === 0) {
+    camPos.y += verticalSpeed; // decline your spaceship when you press the joystick, reduce y
+  }
 
-
-  if (joySW === 0 && gameState !== "PLAY") initGame();
+  if ((joySW1 === 0 || joySW2 === 0) && gameState !== "PLAY") initGame();
   // set up camera
   // show what you are seeing
   camera(camPos.x, camPos.y, camPos.z, camPos.x + vX, camPos.y + vY, camPos.z + vZ, 0, 1, 0);
